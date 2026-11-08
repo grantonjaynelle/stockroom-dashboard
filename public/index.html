@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stockroom</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div>
+      <h1>Stockroom</h1>
+      <p>See what’s on the shelf, what’s running low, and what it’s worth.</p>
+    </div>
+    <button class="btn primary" id="addBtn">Add item</button>
+  </header>
+
+  <section class="stats" aria-label="Summary">
+    <div><span class="num" id="statItems">–</span><span class="lbl">Products</span></div>
+    <div><span class="num" id="statUnits">–</span><span class="lbl">Units in stock</span></div>
+    <div><span class="num" id="statValue">–</span><span class="lbl">Stock value</span></div>
+    <div class="warn"><span class="num" id="statLow">–</span><span class="lbl">Need reordering</span></div>
+  </section>
+
+  <main class="layout">
+    <section class="panel">
+      <div class="toolbar">
+        <input type="search" id="search" placeholder="Search products" aria-label="Search products">
+        <select id="categoryFilter" aria-label="Filter by category"></select>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th><th>Category</th><th>Stock level</th>
+              <th class="r">Price</th><th class="r">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <p class="empty" id="empty" hidden>No products match. Clear the search or add a new item.</p>
+    </section>
+
+    <aside class="side">
+      <section class="panel pad">
+        <h2>Stock value by category</h2>
+        <ul class="bars" id="categoryBars"></ul>
+      </section>
+      <section class="panel pad">
+        <h2>Running low</h2>
+        <ul class="lowlist" id="lowList"></ul>
+      </section>
+    </aside>
+  </main>
+
+  <dialog id="formDialog">
+    <form id="itemForm" method="dialog" novalidate>
+      <h2 id="formTitle">Add item</h2>
+      <label>Product name <input name="name" required maxlength="80"></label>
+      <label>Category <input name="category" list="categoryList" required maxlength="40"></label>
+      <datalist id="categoryList"></datalist>
+      <div class="two">
+        <label>Quantity <input name="quantity" type="number" min="0" step="1" required></label>
+        <label>Price <input name="price" type="number" min="0" step="0.01" required></label>
+      </div>
+      <label>Reorder when stock reaches
+        <input name="reorder_level" type="number" min="0" step="1" required>
+      </label>
+      <p class="error" id="formError" role="alert" hidden></p>
+      <div class="actions">
+        <button type="button" class="btn" id="cancelBtn">Cancel</button>
+        <button type="submit" class="btn primary" id="saveBtn">Save item</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="deleteDialog">
+    <form method="dialog">
+      <h2>Delete this item?</h2>
+      <p id="deleteText"></p>
+      <div class="actions">
+        <button type="button" class="btn" id="keepBtn">Keep item</button>
+        <button type="button" class="btn danger" id="confirmDeleteBtn">Delete item</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
